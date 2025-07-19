@@ -1,0 +1,33 @@
+{
+  "name": "BroadcastBot",
+  "description": "Telegram Broadcast Bot with Force Join & Admin Features",
+  "repository": "https://github.com/yourusername/broadcastbot",
+  "keywords": ["telegram", "bot", "broadcast", "pyrogram", "heroku"],
+  "env": {
+    "API_ID": {
+      "description": "Telegram API ID from my.telegram.org",
+      "value": "28408963"
+    },
+    "API_HASH": {
+      "description": "Telegram API Hash from my.telegram.org",
+      "value": "b35abdf430d4f8ef6e4311861f6458f8"
+    },
+    "BOT_TOKEN": {
+      "description": "Bot Token from BotFather",
+      "value": "7951413173:AAHhaNn0ys-E0UAzF2h5FN8psAj5-V6mwuk"
+    },
+    "OWNER_ID": {
+      "description": "Telegram user ID of the bot owner",
+      "value": "7269382715"
+    },
+    "FORCE_JOIN_LINK": {
+      "description": "Force join invite link (like https://t.me/+abc123...)",
+      "value": "https://t.me/+ln7tvlZ19d8wNDQ1"
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ]
+}
