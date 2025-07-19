@@ -8,8 +8,8 @@ API_ID = int(os.environ.get("API_ID"))
 API_HASH = os.environ.get("API_HASH")
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
 OWNER_ID = int(os.environ.get("OWNER_ID"))
-FORCE_JOIN = os.environ.get("FORCE_JOIN", "")  # Username like "@yourchannel"
-FORCE_JOIN_LINK = os.environ.get("FORCE_JOIN_LINK", "")  # Full link like "https://t.me/..."
+FORCE_JOIN = os.environ.get("FORCE_JOIN", "")
+FORCE_JOIN_LINK = os.environ.get("FORCE_JOIN_LINK", "")
 
 bot = Client("broadcast_bot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
@@ -18,8 +18,8 @@ conn = sqlite3.connect("bot.db", check_same_thread=False)
 cursor = conn.cursor()
 cursor.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username TEXT)")
 cursor.execute("CREATE TABLE IF NOT EXISTS banned (id INTEGER PRIMARY KEY)")
+cursor.execute("CREATE TABLE IF NOT EXISTS sudo (id INTEGER PRIMARY KEY)")
 conn.commit()
-
 
 def add_user(user_id, username):
     cursor.execute("INSERT OR REPLACE INTO users (id, username) VALUES (?, ?)", (user_id, username))
@@ -38,6 +38,20 @@ def unban_user(user_id):
 
 def get_all_users():
     return cursor.execute("SELECT id, username FROM users").fetchall()
+
+def add_sudo(user_id):
+    cursor.execute("INSERT OR IGNORE INTO sudo (id) VALUES (?)", (user_id,))
+    conn.commit()
+
+def remove_sudo(user_id):
+    cursor.execute("DELETE FROM sudo WHERE id = ?", (user_id,))
+    conn.commit()
+
+def is_sudo(user_id):
+    return cursor.execute("SELECT 1 FROM sudo WHERE id = ?", (user_id,)).fetchone() is not None
+
+def is_admin(user_id):
+    return user_id == OWNER_ID or is_sudo(user_id)
 
 async def check_force_join(user_id):
     if not FORCE_JOIN:
@@ -77,8 +91,10 @@ async def refresh_handler(client, callback):
     else:
         await callback.answer("🚫 You still haven't joined.", show_alert=True)
 
-@bot.on_message(filters.command("broadcast") & filters.user(OWNER_ID))
+@bot.on_message(filters.command("broadcast"))
 async def broadcast_handler(client, message: Message):
+    if not is_admin(message.from_user.id):
+        return
     if not message.reply_to_message:
         return await message.reply("📢 Reply to the message you want to broadcast.")
 
@@ -96,14 +112,19 @@ async def broadcast_handler(client, message: Message):
 
     await message.reply(f"✅ Broadcast done.\n🟢 Sent: {success}\n🔴 Failed: {failed}")
 
-@bot.on_message(filters.command("stats") & filters.user(OWNER_ID))
+@bot.on_message(filters.command("stats"))
 async def stats_handler(client, message: Message):
+    if not is_admin(message.from_user.id):
+        return
     total = cursor.execute("SELECT COUNT(*) FROM users").fetchone()[0]
     bans = cursor.execute("SELECT COUNT(*) FROM banned").fetchone()[0]
-    await message.reply(f"📊 Total users: {total}\n🚫 Banned: {bans}")
+    sudos = cursor.execute("SELECT COUNT(*) FROM sudo").fetchone()[0]
+    await message.reply(f"📊 Total users: {total}\n🚫 Banned: {bans}\n👮‍♂️ Sudo users: {sudos}")
 
-@bot.on_message(filters.command("ban") & filters.user(OWNER_ID))
+@bot.on_message(filters.command("ban"))
 async def ban_handler(client, message: Message):
+    if not is_admin(message.from_user.id):
+        return
     try:
         user_id = int(message.command[1])
         ban_user(user_id)
@@ -111,8 +132,10 @@ async def ban_handler(client, message: Message):
     except:
         await message.reply("⚠️ Usage: /ban <user_id>")
 
-@bot.on_message(filters.command("unban") & filters.user(OWNER_ID))
+@bot.on_message(filters.command("unban"))
 async def unban_handler(client, message: Message):
+    if not is_admin(message.from_user.id):
+        return
     try:
         user_id = int(message.command[1])
         unban_user(user_id)
@@ -120,8 +143,10 @@ async def unban_handler(client, message: Message):
     except:
         await message.reply("⚠️ Usage: /unban <user_id>")
 
-@bot.on_message(filters.command("users") & filters.user(OWNER_ID))
+@bot.on_message(filters.command("users"))
 async def users_list_handler(client, message: Message):
+    if not is_admin(message.from_user.id):
+        return
     users = get_all_users()
     if not users:
         return await message.reply("❌ No users found.")
@@ -130,5 +155,27 @@ async def users_list_handler(client, message: Message):
     parts = [user_list[i:i+4000] for i in range(0, len(user_list), 4000)]
     for part in parts:
         await message.reply(part)
+
+@bot.on_message(filters.command("addsudo"))
+async def add_sudo_handler(client, message: Message):
+    if message.from_user.id != OWNER_ID:
+        return
+    try:
+        user_id = int(message.command[1])
+        add_sudo(user_id)
+        await message.reply(f"✅ User `{user_id}` added as sudo.")
+    except:
+        await message.reply("⚠️ Usage: /addsudo <user_id>")
+
+@bot.on_message(filters.command("delsudo"))
+async def del_sudo_handler(client, message: Message):
+    if message.from_user.id != OWNER_ID:
+        return
+    try:
+        user_id = int(message.command[1])
+        remove_sudo(user_id)
+        await message.reply(f"❌ User `{user_id}` removed from sudo.")
+    except:
+        await message.reply("⚠️ Usage: /delsudo <user_id>")
 
 bot.run()
