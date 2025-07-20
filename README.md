@@ -1,4 +1,90 @@
-nd modify with credit.
+<h1 align="center">📢 Telegram Broadcast Bot</h1>
+
+<p align="center">
+  A powerful, clean, and lightweight Telegram bot to broadcast messages to your users with ease.
+</p>
 
 ---
-# 📢 Telegram Broadcast Bot\n\nA powerful, clean, and lightweight Telegram bot to broadcast messages to your users with ease.\n\n---\n\n## 🚀 Deploy to Heroku\n\n1. ⚙️ Fork or upload this repo to your GitHub.\n2. 📲 Click the button below to deploy:\n\n[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)\n\n3. 📌 Set the following **Environment Variables**:\n\n| Variable           | Description                                                   |\n|-------------------|---------------------------------------------------------------|\n| `API_ID`          | From [my.telegram.org](https://my.telegram.org)               |\n| `API_HASH`        | From [my.telegram.org](https://my.telegram.org)               |\n| `BOT_TOKEN`       | From [@BotFather](https://t.me/BotFather)                     |\n| `OWNER_ID`        | Your Telegram numeric user ID                                 |\n| `FORCE_JOIN`      | Your channel username like `@channelname` or leave empty      |\n| `FORCE_JOIN_LINK` | Optional: Full invite link if channel is private              |\n\n✅ Your bot will be up and running after deployment!\n\n---\n\n## ✨ Features\n\n- 🔐 Force Join system with \"I've Joined\" button\n- 👑 Admin + Sudo-based command system\n- 📊 Stats panel for total users, banned, sudo\n- 🧠 Smart user logging using SQLite\n- 📤 Easy and fast message broadcasting\n- ☁️ Ready for **Heroku Deployment**\n- 📁 Clean file structure and optimized code\n\n---\n\n## 👤 Admin Commands\n\n| Command              | Access     | Description                                      |\n|----------------------|------------|--------------------------------------------------|\n| `/broadcast`         | Owner/Sudo | Reply to any message to broadcast to all users  |\n| `/stats`             | Owner/Sudo | View total users, banned users, sudo list       |\n| `/users`             | Owner/Sudo | Show list of all registered users               |\n| `/ban <user_id>`     | Owner/Sudo | Ban a user from using the bot                   |\n| `/unban <user_id>`   | Owner/Sudo | Unban a previously banned user                  |\n| `/addsudo <user_id>` | Owner only | Grant sudo access to a user                     |\n| `/delsudo <user_id>` | Owner only | Remove sudo access from a user                  |\n\n> ⚠️ Only the bot OWNER or added SUDO users can use these commands.\n\n---\n\n## 🛡 Force Join System\n\n- If `FORCE_JOIN` is set, users must join your channel to use the bot.\n- Users are shown a **Join Button** and a **Refresh Button**.\n- Skipped if `FORCE_JOIN` is not configured.\n\n---\n\n## 🗄 SQLite Database\n\nStores:\n\n- 👥 All users (ID, username)\n- ❌ Banned users\n- 👮‍♂️ Sudo users\n\nDatabase file: `bot.db` (auto-created on first run)\n\n---\n\n## 📁 Project Structure\n\n```\n.\n├── main.py           # Main bot logic\n├── bot.db            # SQLite DB file (auto-generated)\n├── requirements.txt  # Python dependencies\n└── README.md         # Project info\n```\n\n---\n\n## 🧑‍💻 Developer\n\n- 👨‍💻 **Devil**\n- 💬 **Telegram:** [@Ankitgupta2143](https://t.me/Ankitgupta2143)\n\nNeed a custom bot? Feel free to contact!\n\n---\n\n## 📜 License\n\n📝 Released under the **MIT License**  \nFeel free to use, modify, and share — with credit 🙏\n\n---\n\n## 🌟 Show Your Support\n\nIf you ❤️ this bot:\n\n- ⭐ Star this repo on GitHub\n- 🔁 Share it with friends\n- ☕ Buy the dev a coffee (just saying 😄)
+
+## 🚀 Deploy to Heroku
+
+1. ⚙️ Fork or upload this repo to your GitHub.  
+2. 📲 Click the button below to deploy:
+
+<p align="center">
+  <a href="https://heroku.com/deploy">
+    <img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy to Heroku">
+  </a>
+</p>
+
+3. 📌 Set the following **Environment Variables**:
+
+| Variable           | Description                                                   |
+|--------------------|---------------------------------------------------------------|
+| `API_ID`           | From [my.telegram.org](https://my.telegram.org)               |
+| `API_HASH`         | From [my.telegram.org](https://my.telegram.org)               |
+| `BOT_TOKEN`        | From [@BotFather](https://t.me/BotFather)                     |
+| `OWNER_ID`         | Your Telegram numeric user ID                                 |
+| `FORCE_JOIN`       | Your channel username like `@channelname` or leave empty      |
+| `FORCE_JOIN_LINK`  | Optional: Full invite link if channel is private              |
+
+✅ Your bot will be up and running after deployment!
+
+---
+
+## ✨ Features
+
+- 🔐 Force Join system with “I’ve Joined” button  
+- 👑 Admin + Sudo-based command system  
+- 📊 Stats panel for total users, banned, sudo  
+- 🧠 Smart user logging using SQLite  
+- 📤 Easy and fast message broadcasting  
+- ☁️ Ready for **Heroku Deployment**  
+- 📁 Clean file structure and optimized code  
+
+---
+
+## 👤 Admin Commands
+
+| Command              | Access     | Description                                      |
+|----------------------|------------|--------------------------------------------------|
+| `/broadcast`         | Owner/Sudo | Reply to any message to broadcast to all users   |
+| `/stats`             | Owner/Sudo | View total users, banned users, sudo list        |
+| `/users`             | Owner/Sudo | Show list of all registered users                |
+| `/ban <user_id>`     | Owner/Sudo | Ban a user from using the bot                    |
+| `/unban <user_id>`   | Owner/Sudo | Unban a previously banned user                   |
+| `/addsudo <user_id>` | Owner only | Grant sudo access to a user                      |
+| `/delsudo <user_id>` | Owner only | Remove sudo access from a user                   |
+
+> ⚠️ Only the bot OWNER or added SUDO users can use these commands.
+
+---
+
+## 🛡 Force Join System
+
+- If `FORCE_JOIN` is set, users must join your channel to use the bot.  
+- Users are shown a **Join Button** and a **Refresh Button**.  
+- Skipped if `FORCE_JOIN` is not configured.
+
+---
+
+## 🗄 SQLite Database
+
+Stores:
+
+- 👥 All users (ID, username)  
+- ❌ Banned users  
+- 👮‍♂️ Sudo users  
+
+Database file: `bot.db` (auto-created on first run)
+
+---
+
+## 📁 Project Structure
+
+```bash
+.
+├── main.py           # Main bot logic
+├── bot.db            # SQLite DB file (auto-generated)
+├── requirements.txt  # Python dependencies
+└── README.md         # Project info
