@@ -99,7 +99,7 @@ async def start(client, message: Message):
 
     chnl_link = get_setting("channel_link") or "https://t.me/example_channel"
     group_link = get_setting("group_link") or "https://t.me/example_group"
-    owner_link = f"https://t.me/{username}" if username != "None" else "https://t.me/OWNER_USERNAME"
+    owner_link = f"https://t.me/{username}" if username != "@Crack_by_Aizen" else "https://t.me/OWNER_USERNAME"
 
     buttons = InlineKeyboardMarkup([
         [InlineKeyboardButton("📢 Join Channel", url=chnl_link)],
